@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <property name="HOME_LOG" value=".data/log"/>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{MMM-dd HH:mm:ss.SSS} %magenta([%-10.10thread]) %highlight(%level) %cyan(%-36.36logger{36}) %white(⸬) %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE-APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${HOME_LOG}/ipl-dashboard.log</file>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${HOME_LOG}/ipl-dashboard.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <maxFileSize>5MB</maxFileSize>
+            <totalSizeCap>50MB</totalSizeCap>
+            <maxHistory>3</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} :: %mdc :: %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="FILE-APPENDER"/>
+    </appender>
+
+    <logger name="com.dcocos.ipldashboard" level="trace" additivity="false">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="ASYNC"/>
+    </logger>
+
+    <logger name="web" level="trace" additivity="false">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="ASYNC"/>
+    </logger>
+
+    <root level="error">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="ASYNC"/>
+    </root>
+</configuration>
