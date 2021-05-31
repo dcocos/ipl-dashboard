@@ -2,6 +2,7 @@ package com.dcocos.ipldashboard.data;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
@@ -25,34 +26,32 @@ public class JobCompletionNotificationListener extends JobExecutionListenerSuppo
     @Transactional
     public void afterJob(JobExecution jobExecution) {
         if (jobExecution.getStatus() == BatchStatus.COMPLETED) {
-            log.info("Job finished! Verify the results.");
+            log.debug("Job finished! Verify the results.");
 
             Map<String, Team> teamData = new HashMap<>();
 
             em.createQuery("select m.team1, count(*) from Match m group by m.team1", Object[].class)
                     .getResultList()
                     .stream()
-                    .map(e -> new Team((String) e[0], (long) e[1]))
+                    .map(element -> new Team((String) element[0], (long) element[1]))
                     .forEach(team -> teamData.put(team.getTeamName(), team));
 
             em.createQuery("select m.team2, count(*) from Match m group by m.team2", Object[].class)
                     .getResultList()
-                    .forEach(e -> {
-                        Team team = teamData.get((String) e[0]);
-                        team.setTotalMatches(team.getTotalMatches() + (long) e[1]);
+                    .forEach(element -> {
+                        var team = teamData.get(element[0]);
+                        team.setTotalMatches(team.getTotalMatches() + (long) element[1]);
                     });
 
             em.createQuery("select m.matchWinner, count(*) from Match m group by m.matchWinner", Object[].class)
                     .getResultList()
                     .forEach(e -> {
-                        Team team = teamData.get((String) e[0]);
-                        if (team != null) {
-                            team.setTotalWins((long) e[1]);
-                        }
+                        var team = Optional.ofNullable(teamData.get(e[0]));
+                        team.ifPresent(value -> value.setTotalWins((long) e[1]));
                     });
 
             teamData.values().forEach(em::persist);
-            teamData.values().forEach(System.out::println);
+            teamData.values().forEach(team -> log.debug("{}", team));
         }
     }
 }

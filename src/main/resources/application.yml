@@ -1,0 +1,10 @@
+server:
+  port: 8531
+  error:
+    whitelabel:
+      enabled: false
+
+logging:
+  level:
+    web: OFF
+    com.dcocos.ipldashboard: DEBUG
