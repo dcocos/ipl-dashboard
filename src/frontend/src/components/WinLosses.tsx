@@ -9,7 +9,6 @@ type Params = {
 }
 
 export const WinLosses = ({team}: Params) => {
-  let ref: any;
   const data = [
     {
       type: 'wins',
@@ -53,5 +52,5 @@ export const WinLosses = ({team}: Params) => {
     interactions: [{type: 'element-selected'}, {type: 'element-active'}],
   };
 
-  return <Pie {...config} chartRef={(chartRef) => (ref = chartRef)}/>;
+  return <Pie {...config}/>;
 }
