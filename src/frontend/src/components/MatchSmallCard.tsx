@@ -1,9 +1,14 @@
 import React from 'react';
+import {Match} from "../models/Match";
 
-export const MatchSmallCard = () => {
+type Params = {
+  match: Match
+}
+
+export const MatchSmallCard = ({ match }: Params) => {
   return (
     <div className="MatchSmallCard">
-      <p>Match Small Card</p>
+      <p>{match?.team1} vs {match?.team2}</p>
     </div>
   );
 }
