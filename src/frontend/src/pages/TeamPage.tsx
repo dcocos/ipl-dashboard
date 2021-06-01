@@ -5,6 +5,7 @@ import {Team} from "../models/Team";
 import {MatchSmallCard} from "../components/MatchSmallCard";
 import './TeamPage.scss'
 import {WinLosses} from "../components/WinLosses";
+import {Link} from "react-router-dom";
 
 export const TeamPage = () => {
 
@@ -41,7 +42,7 @@ export const TeamPage = () => {
         <MatchSmallCard key={match.id} match={match} teamName={team?.teamName}/>
       )}
       <div className="more-link">
-        <a href="#">More... </a>
+        <Link to={`/teams/${teamName}/matches/${process.env.REACT_APP_END_YEAR_DATE}`}>More {'>'} </Link>
       </div>
     </div>
   );
