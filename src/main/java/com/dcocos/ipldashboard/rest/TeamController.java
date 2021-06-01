@@ -1,4 +1,4 @@
-package com.dcocos.ipldashboard.resources;
+package com.dcocos.ipldashboard.rest;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ public record TeamController(TeamService teamService, MatchesService matchesServ
 
     @GetMapping("/teams")
     @ResponseStatus(HttpStatus.OK)
-    public List<Team> getTeams() {
+    public Iterable<Team> getTeams() {
         return teamService.getTeams();
     }
 
