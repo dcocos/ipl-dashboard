@@ -2,6 +2,7 @@ package com.dcocos.ipldashboard.resources;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,6 +11,7 @@ import com.dcocos.ipldashboard.model.Team;
 import com.dcocos.ipldashboard.services.TeamService;
 
 @RestController
+@CrossOrigin
 public record TeamController(TeamService teamService) {
 
     @GetMapping("/teams")
