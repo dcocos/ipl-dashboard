@@ -3,6 +3,8 @@ import {useParams} from "react-router";
 import {MatchDetailCard} from "../components/MatchDetailCard";
 import {Team} from "../models/Team";
 import {MatchSmallCard} from "../components/MatchSmallCard";
+import './TeamPage.scss'
+import {WinLosses} from "../components/WinLosses";
 
 export const TeamPage = () => {
 
@@ -25,11 +27,22 @@ export const TeamPage = () => {
   }
   return (
     <div className="TeamPage">
-      <h1>{team?.teamName}</h1>
-      <MatchDetailCard match={team?.matches[0] as any} teamName={team?.teamName}/>
+      <div className="team-name-section">
+        <h1 className="team-name">{team?.teamName}</h1>
+      </div>
+      <div className="win-loss-section">
+        <WinLosses team={team}/>
+      </div>
+      <div className="match-detail-section">
+        <h3>Latest Matches</h3>
+        <MatchDetailCard match={team?.matches[0] as any} teamName={team?.teamName}/>
+      </div>
       {team?.matches.slice(1).map((match: any) =>
         <MatchSmallCard key={match.id} match={match} teamName={team?.teamName}/>
       )}
+      <div className="more-link">
+        <a href="#">More... </a>
+      </div>
     </div>
   );
 }
